@@ -1,25 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mainlayout"
     android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    >
-<TextView  
-    android:layout_width="fill_parent" 
-    android:layout_height="wrap_content" 
-    android:text="@string/get_coord_text"
+    android:layout_height="fill_parent" >
+
+    <com.google.android.maps.MapView
+        android:id="@+id/mapview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:apiKey="0M3lAlXetxefGLyZafWbNvhcqdaq1WtkX-_RnoA"
+
     />
 
-<TextView  
-	android:id="@+id/gpsCoord"
-    android:layout_width="fill_parent" 
-    android:layout_height="wrap_content" 
-    />
-
-    
-<Button android:id="@+id/takeNewLoc"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Take this position" />    
-    
-</LinearLayout>
+</RelativeLayout>
