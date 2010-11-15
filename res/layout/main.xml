@@ -7,6 +7,18 @@
 <TextView  
     android:layout_width="fill_parent" 
     android:layout_height="wrap_content" 
-    android:text="@string/hello"
+    android:text="@string/welcome"
     />
+
+<Button android:id="@+id/newLoc"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Define a new location" />    
+
+    
+<Button android:id="@+id/button"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Take a picture" />    
+    
 </LinearLayout>
