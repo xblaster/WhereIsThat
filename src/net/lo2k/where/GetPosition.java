@@ -93,7 +93,7 @@ public class GetPosition extends MapActivity {
 	protected void makeUseOfNewLocation(Location location) {
 		//TextView text = (TextView) findViewById(R.id.gpsCoord);
 		MapView map = (MapView) findViewById(R.id.mapview);
-		//map.setClickable(true);
+		map.setClickable(true);
 		map.setBuiltInZoomControls(true);
 		GeoPoint p = new GeoPoint((int)(location.getLatitude()*1E6), (int)(location.getLongitude()*1E6));
 		MapController mc = map.getController();
