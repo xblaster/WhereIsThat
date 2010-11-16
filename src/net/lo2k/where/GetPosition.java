@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
@@ -19,10 +20,14 @@ import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 
 public class GetPosition extends MapActivity {
+	private ProgressDialog dialog;
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.get_pos);
+        
+        dialog = ProgressDialog.show(GetPosition.this, "", 
+                "Retrieve coordinate", true);
         
       //define locationManager
 		final LocationManager locationManager = (LocationManager) this
@@ -44,6 +49,10 @@ public class GetPosition extends MapActivity {
 			public void onProviderDisabled(String provider) {
 			}
 		};
+		
+		makeUseOfNewLocation(locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER));
+		
+		
 		
 		locationManager.requestLocationUpdates(
 				LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
@@ -91,6 +100,14 @@ public class GetPosition extends MapActivity {
     }
 */
 	protected void makeUseOfNewLocation(Location location) {
+		
+		if (location==null) {
+			return;
+		}
+		
+		dialog.hide();
+		
+		
 		//TextView text = (TextView) findViewById(R.id.gpsCoord);
 		MapView map = (MapView) findViewById(R.id.mapview);
 		map.setClickable(true);
