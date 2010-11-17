@@ -4,8 +4,11 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+import net.lo2k.where.map.overlayitem.MarkerMapOverlay;
+
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -18,9 +21,16 @@ import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
+import com.google.android.maps.Overlay;
+import com.google.android.maps.OverlayItem;
 
 public class GetPosition extends MapActivity {
 	private ProgressDialog dialog;
+	
+	
+	private List<Overlay> mapOverlays;
+	MarkerMapOverlay markerOverlay;
+	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,7 +39,24 @@ public class GetPosition extends MapActivity {
         dialog = ProgressDialog.show(GetPosition.this, "", 
                 "Retrieve coordinate", true);
         
-      //define locationManager
+		MapView map = (MapView) findViewById(R.id.mapview);
+		map.setClickable(true);
+		map.setBuiltInZoomControls(true);
+		
+		mapOverlays = map.getOverlays();
+		GeoPoint point = new GeoPoint(19240000,-99120000);
+		OverlayItem overlayitem = new OverlayItem(point, "Hola, Mundo!", "I'm in Mexico City!");
+		Drawable drawable = this.getResources().getDrawable(R.drawable.marker);
+		markerOverlay = new MarkerMapOverlay(drawable);
+		
+		markerOverlay.addOverlay(overlayitem);
+		defineLocationManager();
+		
+		mapOverlays.add(markerOverlay);
+	}
+	
+	private void defineLocationManager() {
+		//define locationManager
 		final LocationManager locationManager = (LocationManager) this
 				.getSystemService(Context.LOCATION_SERVICE);
 		final LocationListener locationListener = new LocationListener() {
@@ -52,12 +79,10 @@ public class GetPosition extends MapActivity {
 		
 		makeUseOfNewLocation(locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER));
 		
-		
-		
 		locationManager.requestLocationUpdates(
 				LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
 	}
-	
+
 	@Override
 	protected boolean isRouteDisplayed() {
 	    return false;
@@ -110,11 +135,15 @@ public class GetPosition extends MapActivity {
 		
 		//TextView text = (TextView) findViewById(R.id.gpsCoord);
 		MapView map = (MapView) findViewById(R.id.mapview);
-		map.setClickable(true);
-		map.setBuiltInZoomControls(true);
+		
 		GeoPoint p = new GeoPoint((int)(location.getLatitude()*1E6), (int)(location.getLongitude()*1E6));
 		MapController mc = map.getController();
 		mc.animateTo(p);
+		
+		//retrieve map overlay
+		mapOverlays = map.getOverlays();
+		OverlayItem overlayitem = new OverlayItem(p, "You are here", "You are here");
+		markerOverlay.addOverlay(overlayitem);
 		
 		//geocode !
 		Geocoder geoCoder = new Geocoder(
